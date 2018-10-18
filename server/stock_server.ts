@@ -1,8 +1,12 @@
 import * as express from "express"
 import { Server } from "ws";
+import * as path from 'path';
 
 
 const app = express()
+//使用静态资源
+app.use('/', express.static(path.join(__dirname, '..', 'client')))
+
 app.get('/api/stock', (req, res) => {
     let result = stocks
     let params = req.query
@@ -35,9 +39,9 @@ setInterval(() => {
     subscriptions.forEach(ws => {
         if (ws.readyState === 1) {
             ws.send(JSON.stringify({
-                messageCount: messageCount ++
+                messageCount: messageCount++
             }))
-        } else{
+        } else {
             subscriptions.delete(ws)
         }
     })
